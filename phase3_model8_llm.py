@@ -15,7 +15,7 @@ from sklearn.metrics import classification_report
 # ============================================================
 # 配置DeepSeek API
 # ============================================================
-API_KEY = "sk-6322a9e69a1f44c293dd1265a7c87119"
+API_KEY = "---"
 client = OpenAI(api_key=API_KEY, base_url="https://api.deepseek.com")
 
 # ============================================================
