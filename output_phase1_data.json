@@ -1,0 +1,245 @@
+{
+  "stats": {
+    "训练集": {
+      "total": 40000,
+      "positive": 19981,
+      "negative": 20019,
+      "pos_ratio": 49.95,
+      "neg_ratio": 50.05
+    },
+    "验证集": {
+      "total": 5000,
+      "positive": 2514,
+      "negative": 2486,
+      "pos_ratio": 50.28,
+      "neg_ratio": 49.72
+    },
+    "测试集": {
+      "total": 5000,
+      "positive": 2505,
+      "negative": 2495,
+      "pos_ratio": 50.1,
+      "neg_ratio": 49.9
+    }
+  },
+  "text_length": {
+    "avg_char_len": 1310.3,
+    "median_char_len": 973.0,
+    "min_char_len": 32,
+    "max_char_len": 13704,
+    "avg_word_count": 231.3,
+    "median_word_count": 173.0,
+    "pos_avg_char_len": 1328.1,
+    "pos_avg_word_count": 233.5,
+    "neg_avg_char_len": 1292.5,
+    "neg_avg_word_count": 229.2
+  },
+  "pos_top10": [
+    [
+      "film",
+      33559
+    ],
+    [
+      "movie",
+      30391
+    ],
+    [
+      "one",
+      21876
+    ],
+    [
+      "like",
+      14315
+    ],
+    [
+      "good",
+      12029
+    ],
+    [
+      "great",
+      10371
+    ],
+    [
+      "story",
+      10323
+    ],
+    [
+      "time",
+      10215
+    ],
+    [
+      "well",
+      10196
+    ],
+    [
+      "see",
+      9834
+    ]
+  ],
+  "neg_top10": [
+    [
+      "movie",
+      40150
+    ],
+    [
+      "film",
+      30104
+    ],
+    [
+      "one",
+      21010
+    ],
+    [
+      "like",
+      17978
+    ],
+    [
+      "even",
+      12233
+    ],
+    [
+      "good",
+      11895
+    ],
+    [
+      "bad",
+      11748
+    ],
+    [
+      "would",
+      11187
+    ],
+    [
+      "time",
+      9954
+    ],
+    [
+      "really",
+      9900
+    ]
+  ],
+  "pos_pmi_top10": [
+    [
+      "dassin",
+      0.6941,
+      23,
+      0
+    ],
+    [
+      "gundam",
+      0.6941,
+      16,
+      0
+    ],
+    [
+      "ponyo",
+      0.6941,
+      22,
+      0
+    ],
+    [
+      "rififi",
+      0.6941,
+      20,
+      0
+    ],
+    [
+      "crossfire",
+      0.6533,
+      24,
+      1
+    ],
+    [
+      "antwone",
+      0.6428,
+      19,
+      1
+    ],
+    [
+      "raines",
+      0.64,
+      36,
+      2
+    ],
+    [
+      "biko",
+      0.6335,
+      16,
+      1
+    ],
+    [
+      "fido",
+      0.6335,
+      16,
+      1
+    ],
+    [
+      "raoul",
+      0.6235,
+      41,
+      3
+    ]
+  ],
+  "neg_pmi_top10": [
+    [
+      "manos",
+      0.6922,
+      0,
+      51
+    ],
+    [
+      "caligula",
+      0.6922,
+      0,
+      15
+    ],
+    [
+      "uwe",
+      0.6793,
+      1,
+      77
+    ],
+    [
+      "boll",
+      0.6666,
+      2,
+      77
+    ],
+    [
+      "dien",
+      0.6662,
+      1,
+      38
+    ],
+    [
+      "steaming",
+      0.6583,
+      2,
+      58
+    ],
+    [
+      "chupacabra",
+      0.6477,
+      1,
+      22
+    ],
+    [
+      "abomination",
+      0.6442,
+      3,
+      61
+    ],
+    [
+      "stinker",
+      0.644,
+      8,
+      162
+    ],
+    [
+      "concorde",
+      0.6409,
+      1,
+      19
+    ]
+  ]
+}

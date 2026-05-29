@@ -1,0 +1,887 @@
+[
+  {
+    "text": "My 2 year old likes the Doodlebops show, it seems to keep his attention for awhile. The characters are interesting, vibrant with primary colours and all. There's not much educational content that the ",
+    "true_label": 1,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "educational content",
+        "production values",
+        "characters",
+        "merchandise",
+        "live show"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.4,
+      "key_phrases": [
+        "not much educational content",
+        "average show",
+        "don't buy into the merchandise",
+        "money better spent"
+      ],
+      "aspects": [
+        {
+          "aspect": "characters",
+          "sentiment": "positive",
+          "evidence": "interesting, vibrant with primary colours"
+        },
+        {
+          "aspect": "educational content",
+          "sentiment": "negative",
+          "evidence": "not much educational content that the intended target audience could benefit from"
+        },
+        {
+          "aspect": "production values",
+          "sentiment": "positive",
+          "evidence": "well produced with high production values"
+        },
+        {
+          "aspect": "overall quality",
+          "sentiment": "negative",
+          "evidence": "really just an average show like most of the shows on TV these days"
+        },
+        {
+          "aspect": "merchandise",
+          "sentiment": "negative",
+          "evidence": "don't buy into the merchandise angle"
+        },
+        {
+          "aspect": "live show",
+          "sentiment": "negative",
+          "evidence": "don't think we'd spend money to go to a live show"
+        }
+      ]
+    }
+  },
+  {
+    "text": "I almost stopped watching Hindi movies because of the mediocre quality and story lines. One exception for this is Ramgopal Verma movies. This is a nice movie with great performances from the star cast",
+    "true_label": 1,
+    "pred_label": 1,
+    "parsed_output": {
+      "topic": [
+        "acting",
+        "plot",
+        "story adaptation",
+        "characterization",
+        "realism"
+      ],
+      "sentiment": "positive",
+      "sentiment_score": 0.92,
+      "key_phrases": [
+        "great performances",
+        "exceptional good adaptation",
+        "must see movie",
+        "one of the best movie of the year",
+        "more realistic way"
+      ],
+      "aspects": [
+        {
+          "aspect": "acting",
+          "sentiment": "positive",
+          "evidence": "great performances from the star cast"
+        },
+        {
+          "aspect": "plot",
+          "sentiment": "positive",
+          "evidence": "The adaptation of the story and characterization was exceptional good"
+        },
+        {
+          "aspect": "characterization",
+          "sentiment": "positive",
+          "evidence": "characterization was exceptional good"
+        },
+        {
+          "aspect": "realism",
+          "sentiment": "positive",
+          "evidence": "this movie deals in a more realistic way"
+        },
+        {
+          "aspect": "overall quality",
+          "sentiment": "positive",
+          "evidence": "I rate this as one of the best movie of the year"
+        }
+      ]
+    }
+  },
+  {
+    "text": "I like this film for several reasons. I have a soft spot for films about intricately plotted criminal plots like TOPKAPI. I also enjoy films (like TOPKAPI and BIG DEAL ON MADONNA STREET) that spoof th",
+    "true_label": 1,
+    "pred_label": 1,
+    "parsed_output": {
+      "topic": [
+        "plot",
+        "acting",
+        "genre"
+      ],
+      "sentiment": "positive",
+      "sentiment_score": 0.82,
+      "key_phrases": [
+        "soft spot for films",
+        "intricately plotted criminal plots",
+        "one of the best ones"
+      ],
+      "aspects": [
+        {
+          "aspect": "plot",
+          "sentiment": "positive",
+          "evidence": "intricately plotted criminal plots like TOPKAPI"
+        },
+        {
+          "aspect": "genre",
+          "sentiment": "positive",
+          "evidence": "spoof the genre, one of the best ones is DISORGANIZED CRIME"
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "positive",
+          "evidence": "Corbin Bernsen has met four cons... Fred Gwynne, Lou Diamond Philips, Ruben Blades, and Will Russ"
+        }
+      ]
+    }
+  },
+  {
+    "text": "I have always been somewhat underwhelmed by Joe Dante's original THE HOWLING (1981)  so I wasn't particularly interested in checking out any of its sequels; some time ago, I did catch HOWLING III: TH",
+    "true_label": 0,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "acting",
+        "plot",
+        "makeup",
+        "directing"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.9,
+      "key_phrases": [
+        "astoundingly inept",
+        "terrible plot",
+        "limpest connection",
+        "bad rep"
+      ],
+      "aspects": [
+        {
+          "aspect": "plot",
+          "sentiment": "negative",
+          "evidence": "The plot (and dialogue) is not only terrible"
+        },
+        {
+          "aspect": "makeup",
+          "sentiment": "negative",
+          "evidence": "astoundingly inept in all departments (beginning with the all-important werewolf make-up)"
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "negative",
+          "evidence": "dear but pompous horror icon Christopher Lee squirming in the midst of it all"
+        }
+      ]
+    }
+  },
+  {
+    "text": "Interesting concept that just doesn't make it. I watched the whole movie, but had to read IMDb comments to find out what Code 46 meant. If/when it was explained in the film, I must have been in a coma",
+    "true_label": 0,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "concept",
+        "plot",
+        "acting",
+        "visual effects",
+        "casting"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.9,
+      "key_phrases": [
+        "interesting concept that just doesn't make it",
+        "had to read IMDb comments to find out what Code 46 meant",
+        "the best part of the film was the car crash"
+      ],
+      "aspects": [
+        {
+          "aspect": "concept",
+          "sentiment": "negative",
+          "evidence": "Interesting concept that just doesn't make it"
+        },
+        {
+          "aspect": "plot",
+          "sentiment": "negative",
+          "evidence": "had to read IMDb comments to find out what Code 46 meant"
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "negative",
+          "evidence": "I only watched it for Tim Robbins. The fact that I did not know any of the other actors should have been a tip-off"
+        },
+        {
+          "aspect": "casting",
+          "sentiment": "negative",
+          "evidence": "why are the women all so damned ugly?"
+        },
+        {
+          "aspect": "visual effects",
+          "sentiment": "positive",
+          "evidence": "The best part of the film was the car crash. It was totally believable, and not over-the-top like most movie crashes"
+        }
+      ]
+    }
+  },
+  {
+    "text": "I can hardly believe that this inert, turgid and badly staged film is by a filmmaker whose other works I've quite enjoyed. The experience of enduring THE LADY AND THE DUKE (and no other word but \"endu",
+    "true_label": 0,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "directing",
+        "plot",
+        "character development",
+        "visual style"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.9,
+      "key_phrases": [
+        "inert, turgid and badly staged",
+        "enduring",
+        "vile mood",
+        "dull results"
+      ],
+      "aspects": [
+        {
+          "aspect": "directing",
+          "sentiment": "negative",
+          "evidence": "inert, turgid and badly staged film is by a filmmaker whose other works I've quite enjoyed"
+        },
+        {
+          "aspect": "plot",
+          "sentiment": "negative",
+          "evidence": "the dull results of his labor"
+        },
+        {
+          "aspect": "character development",
+          "sentiment": "negative",
+          "evidence": "dislikably elitist woman of her times"
+        },
+        {
+          "aspect": "visual style",
+          "sentiment": "mixed",
+          "evidence": "Rohmer has attempted (with success) to make us see the world through the genre art of 18th century France but ... I question whether it was worth the effort"
+        }
+      ]
+    }
+  },
+  {
+    "text": "This movie is good for entertainment purposes, but it is not historically reliable. If you are looking for a movie and thinking to yourself `Oh I want to learn more about Custer's life and his last st",
+    "true_label": 1,
+    "pred_label": 1,
+    "parsed_output": {
+      "topic": [
+        "entertainment value",
+        "historical accuracy",
+        "acting",
+        "plot",
+        "romance"
+      ],
+      "sentiment": "positive",
+      "sentiment_score": 0.7,
+      "key_phrases": [
+        "good for entertainment purposes",
+        "not historically reliable",
+        "fun movie to watch",
+        "portrays well",
+        "plays very well"
+      ],
+      "aspects": [
+        {
+          "aspect": "historical accuracy",
+          "sentiment": "negative",
+          "evidence": "not historically reliable"
+        },
+        {
+          "aspect": "entertainment value",
+          "sentiment": "positive",
+          "evidence": "good for entertainment purposes"
+        },
+        {
+          "aspect": "plot",
+          "sentiment": "positive",
+          "evidence": "good story"
+        },
+        {
+          "aspect": "acting (Errol Flynn)",
+          "sentiment": "positive",
+          "evidence": "portrays the arrogant, but suave George Armstrong Custer well"
+        },
+        {
+          "aspect": "acting (Olivia De Havilland)",
+          "sentiment": "positive",
+          "evidence": "plays the cute, sweet Libby very well"
+        }
+      ]
+    }
+  },
+  {
+    "text": "This is the most stupid movie ever made. The story is laughable. His wife and kid think he's insane. Then they don't. Then it turns out he is and I think they knew it all along. There is a dog named N",
+    "true_label": 0,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "plot",
+        "acting",
+        "target audience"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.95,
+      "key_phrases": [
+        "most stupid movie",
+        "laughable story",
+        "career sinker",
+        "more entertaining"
+      ],
+      "aspects": [
+        {
+          "aspect": "plot",
+          "sentiment": "negative",
+          "evidence": "The story is laughable"
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "negative",
+          "evidence": "God only knows why Virginia Madsen took this role...this is a career sinker"
+        },
+        {
+          "aspect": "target audience",
+          "sentiment": "negative",
+          "evidence": "I think the target audience for this is 11 and 12 year olds...or for really dumb 23 year olds"
+        }
+      ]
+    }
+  },
+  {
+    "text": "May contain spoilers<br /><br />This historical movie was so refreshing. Although it may be exagerating the actual events, it does show the heartless nature of emperor Qui, which he was later infamous",
+    "true_label": 1,
+    "pred_label": 1,
+    "parsed_output": {
+      "topic": [
+        "acting",
+        "visual effects",
+        "costumes",
+        "settings",
+        "plot",
+        "historical accuracy"
+      ],
+      "sentiment": "positive",
+      "sentiment_score": 0.92,
+      "key_phrases": [
+        "so refreshing",
+        "heartless nature",
+        "beautiful costumes",
+        "excellent performances",
+        "great epic film",
+        "interesting character"
+      ],
+      "aspects": [
+        {
+          "aspect": "historical accuracy",
+          "sentiment": "positive",
+          "evidence": "it does show the heartless nature of emperor Qui, which he was later infamous for"
+        },
+        {
+          "aspect": "visual effects",
+          "sentiment": "positive",
+          "evidence": "there wasn't a single computer generated person in it"
+        },
+        {
+          "aspect": "costumes and settings",
+          "sentiment": "positive",
+          "evidence": "The costumes and the settings were beautiful"
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "positive",
+          "evidence": "the performances were also excellent"
+        },
+        {
+          "aspect": "plot",
+          "sentiment": "positive",
+          "evidence": "Dignity vs. death is a major theme in this movie and i think it reflects the Chinese history and culture"
+        },
+        {
+          "aspect": "character",
+          "sentiment": "positive",
+          "evidence": "I also enjoyed the scene with the dwarf, he was a very interesting character"
+        }
+      ]
+    }
+  },
+  {
+    "text": "Where to start, this movie started badly and ended badly! It consists of extremely poor acting and unrealistic effects that had me cringing in my seat, seriously, my cat could have acted better than t",
+    "true_label": 0,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "acting",
+        "visual effects",
+        "plot"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.98,
+      "key_phrases": [
+        "extremely poor acting",
+        "unrealistic effects",
+        "started badly and ended badly",
+        "laughable",
+        "unbelievable"
+      ],
+      "aspects": [
+        {
+          "aspect": "acting",
+          "sentiment": "negative",
+          "evidence": "extremely poor acting that had me cringing in my seat, seriously, my cat could have acted better than this lot"
+        },
+        {
+          "aspect": "visual effects",
+          "sentiment": "negative",
+          "evidence": "unrealistic effects that had me cringing in my seat"
+        },
+        {
+          "aspect": "plot",
+          "sentiment": "negative",
+          "evidence": "this movie started badly and ended badly"
+        }
+      ]
+    }
+  },
+  {
+    "text": "I vaguely remember this film. I do remember it for the one solid reason that it is the only film that I have ever walked out on!! and since then I have never seen it available to rent ANYWHERE!! I can",
+    "true_label": 0,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "plot",
+        "acting",
+        "directing",
+        "overall quality"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.95,
+      "key_phrases": [
+        "walked out on",
+        "this drivel",
+        "black listed movie",
+        "The Stupids"
+      ],
+      "aspects": [
+        {
+          "aspect": "plot",
+          "sentiment": "negative",
+          "evidence": "the dad goes missing and the family try to search for him, by trying to put an actual photograph into the disc drive of a computer"
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "negative",
+          "evidence": "they must have been paid a whole lot for this drivel"
+        },
+        {
+          "aspect": "directing",
+          "sentiment": "negative",
+          "evidence": "with John Landis directing, but good god"
+        },
+        {
+          "aspect": "overall quality",
+          "sentiment": "negative",
+          "evidence": "the only film that I have ever walked out on"
+        }
+      ]
+    }
+  },
+  {
+    "text": "save your money. i have been a fan of fullmoon productions for a long time and i have never seen them make a movie as bad as this. the casting is terrible, the story is even worse and the special affe",
+    "true_label": 0,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "casting",
+        "story",
+        "special effects"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.95,
+      "key_phrases": [
+        "save your money",
+        "as bad as this",
+        "casting is terrible",
+        "story is even worse",
+        "special affects are worse"
+      ],
+      "aspects": [
+        {
+          "aspect": "casting",
+          "sentiment": "negative",
+          "evidence": "the casting is terrible"
+        },
+        {
+          "aspect": "story",
+          "sentiment": "negative",
+          "evidence": "the story is even worse"
+        },
+        {
+          "aspect": "special effects",
+          "sentiment": "negative",
+          "evidence": "the special affects are worse than any movie iv'e seen sence the 80's"
+        }
+      ]
+    }
+  },
+  {
+    "text": "Before Last Call w/ Carson Daly, my local NBC affiliate aired much more worthwhile programming after Late Night w/ Conan such as second city TV, 3rd Rock From the Sun & Carline in the City reruns, and",
+    "true_label": 0,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "programming",
+        "host performance",
+        "comedy"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.95,
+      "key_phrases": [
+        "awful show",
+        "failed hard",
+        "nothing worthwhile",
+        "not a comedian",
+        "not a good speaker"
+      ],
+      "aspects": [
+        {
+          "aspect": "programming",
+          "sentiment": "negative",
+          "evidence": "These days there is nothing worthwhile to watch because all I get to see is Carson Daly and his awful show"
+        },
+        {
+          "aspect": "host performance",
+          "sentiment": "negative",
+          "evidence": "He is not a comedian, he is not an actor, he does not deserve to be famous because he isn't a good speaker nor comedian"
+        },
+        {
+          "aspect": "comedy",
+          "sentiment": "negative",
+          "evidence": "On his June 21st show, he tried to use an internet meme called the 'Rickroll' on his show. He failed hard"
+        }
+      ]
+    }
+  },
+  {
+    "text": "'Ray' lives on<br /><br />Ray Dir- Taylor Hackford Cast- Jamie Foxx, Kerry Washington, Regina King, Clifton Powell, Curtis Armstrong and Sharon Warren. Written by- Taylor Hackford and James L. White. ",
+    "true_label": 1,
+    "pred_label": 1,
+    "parsed_output": {
+      "topic": [
+        "acting",
+        "plot",
+        "music",
+        "directing"
+      ],
+      "sentiment": "positive",
+      "sentiment_score": 0.9,
+      "key_phrases": [
+        "immortal line",
+        "genius",
+        "instant eternal classic",
+        "deserve to be transformed"
+      ],
+      "aspects": [
+        {
+          "aspect": "music",
+          "sentiment": "positive",
+          "evidence": "Ray Charles was a genius. And if there was one thing that he knew, breathed and lived for; it was music."
+        },
+        {
+          "aspect": "plot",
+          "sentiment": "positive",
+          "evidence": "There are some lives that deserve to be transformed on the silver screen. Ray Charles's life was one of them."
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "positive",
+          "evidence": "Cast- Jamie Foxx, Kerry Washington, Regina King, Clifton Powell, Curtis Armstrong and Sharon Warren."
+        },
+        {
+          "aspect": "directing",
+          "sentiment": "positive",
+          "evidence": "Ray Dir- Taylor Hackford"
+        }
+      ]
+    }
+  },
+  {
+    "text": "The Brain That Wouldn't Die is one awful piece of film that stinks from the opening credits. It's got all the classic signs of being bad: unbelieveable plotline, terrible acting, low-grade sets and li",
+    "true_label": 0,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "plot",
+        "acting",
+        "sets",
+        "lighting"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.95,
+      "key_phrases": [
+        "awful piece of film",
+        "stinks",
+        "unbelieveable plotline",
+        "terrible acting",
+        "low-grade sets",
+        "bad all the way through"
+      ],
+      "aspects": [
+        {
+          "aspect": "plot",
+          "sentiment": "negative",
+          "evidence": "unbelieveable plotline"
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "negative",
+          "evidence": "terrible acting"
+        },
+        {
+          "aspect": "sets",
+          "sentiment": "negative",
+          "evidence": "low-grade sets"
+        },
+        {
+          "aspect": "lighting",
+          "sentiment": "negative",
+          "evidence": "low-grade lighting"
+        }
+      ]
+    }
+  },
+  {
+    "text": "This movie was a poor movie. The plot was poor and the comedy they \"tried\" to deliver came out poorly. The accidents seem contrived and predictable. I thought the actors tried to some extent but with ",
+    "true_label": 0,
+    "pred_label": 0,
+    "parsed_output": {
+      "topic": [
+        "plot",
+        "comedy",
+        "acting",
+        "overall quality"
+      ],
+      "sentiment": "negative",
+      "sentiment_score": 0.95,
+      "key_phrases": [
+        "poor movie",
+        "plot was poor",
+        "comedy came out poorly",
+        "contrived and predictable",
+        "so lame",
+        "worst films"
+      ],
+      "aspects": [
+        {
+          "aspect": "plot",
+          "sentiment": "negative",
+          "evidence": "The plot was poor"
+        },
+        {
+          "aspect": "comedy",
+          "sentiment": "negative",
+          "evidence": "the comedy they 'tried' to deliver came out poorly"
+        },
+        {
+          "aspect": "accidents",
+          "sentiment": "negative",
+          "evidence": "The accidents seem contrived and predictable"
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "negative",
+          "evidence": "the actors tried to some extent but with this movie, it was so lame it can only go so far"
+        },
+        {
+          "aspect": "overall quality",
+          "sentiment": "negative",
+          "evidence": "One of the worst films I have seen and don't recommend it to anyone"
+        }
+      ]
+    }
+  },
+  {
+    "text": "Japanese animators have a unique freedom with animation, which is why they tend to be able to come out with movies like these, movies that ultimately end up on anime-fans hard-drives and college stude",
+    "true_label": 1,
+    "pred_label": 1,
+    "parsed_output": {
+      "topic": [
+        "animation",
+        "visual style",
+        "plot",
+        "dialogue"
+      ],
+      "sentiment": "positive",
+      "sentiment_score": 0.85,
+      "key_phrases": [
+        "unique freedom with animation",
+        "beautifully detailed surrealist journey",
+        "gorgeous, compelling"
+      ],
+      "aspects": [
+        {
+          "aspect": "animation",
+          "sentiment": "positive",
+          "evidence": "Japanese animators have a unique freedom with animation"
+        },
+        {
+          "aspect": "visual style",
+          "sentiment": "positive",
+          "evidence": "beautifully detailed surrealist journey"
+        },
+        {
+          "aspect": "plot",
+          "sentiment": "positive",
+          "evidence": "gorgeous, compelling"
+        },
+        {
+          "aspect": "dialogue",
+          "sentiment": "positive",
+          "evidence": "no real dialog, which makes it easy to pass on to other interested parties uninterested in things like subtitles"
+        }
+      ]
+    }
+  },
+  {
+    "text": "The famous international conductor Daniel Daréus (Michael Nyqvist) has a heart attack with his stressed busy professional life and interrupts his successful career with an early retirement. He decides",
+    "true_label": 1,
+    "pred_label": 1,
+    "parsed_output": {
+      "topic": [
+        "plot",
+        "acting",
+        "character development",
+        "music"
+      ],
+      "sentiment": "positive",
+      "sentiment_score": 0.75,
+      "key_phrases": [
+        "famous international conductor",
+        "opens the hearts",
+        "affecting their daily life",
+        "releases her repressed sexuality"
+      ],
+      "aspects": [
+        {
+          "aspect": "plot",
+          "sentiment": "positive",
+          "evidence": "The famous international conductor Daniel Daréus has a heart attack... and decides to return to his hometown... to live a low-paced life"
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "positive",
+          "evidence": "Michael Nyqvist, Frida Hallgren, Niklas Falk, André Sjöberg, Ingela Olsson, Helen Sjöholm are mentioned in a narrative that suggests strong performances"
+        },
+        {
+          "aspect": "character development",
+          "sentiment": "positive",
+          "evidence": "His music opens the hearts of the members of the choir, affecting their daily life: the slow Tore has the chance to participate; Inger releases her repressed sexuality; Gabriella takes an attitude against her abusive..."
+        },
+        {
+          "aspect": "music",
+          "sentiment": "positive",
+          "evidence": "His music opens the hearts of the members of the choir"
+        }
+      ]
+    }
+  },
+  {
+    "text": "Like many, I first saw The Water Babies as a child/young teen in the late seventies/early eighties. It has remained with me since then with its catchy tunes, memorable portrayals, less-then-successful",
+    "true_label": 1,
+    "pred_label": 1,
+    "parsed_output": {
+      "topic": [
+        "music",
+        "portrayals",
+        "animation",
+        "story",
+        "plot"
+      ],
+      "sentiment": "positive",
+      "sentiment_score": 0.75,
+      "key_phrases": [
+        "catchy tunes",
+        "memorable portrayals",
+        "story full of heart",
+        "good vanquishing evil"
+      ],
+      "aspects": [
+        {
+          "aspect": "music",
+          "sentiment": "positive",
+          "evidence": "catchy tunes"
+        },
+        {
+          "aspect": "portrayals",
+          "sentiment": "positive",
+          "evidence": "memorable portrayals"
+        },
+        {
+          "aspect": "animation",
+          "sentiment": "negative",
+          "evidence": "less-then-successful animation"
+        },
+        {
+          "aspect": "story",
+          "sentiment": "positive",
+          "evidence": "story full of heart, coldness, and ultimately good vanquishing evil"
+        },
+        {
+          "aspect": "plot",
+          "sentiment": "positive",
+          "evidence": "striking similarities to The Wizard of Oz"
+        }
+      ]
+    }
+  },
+  {
+    "text": "\"Two wildlife photographers are traveling through the Amazon River basin on their latest assignment. While trying to capture the wildlife of the area on film, our photographers cross paths with a game",
+    "true_label": 0,
+    "pred_label": 1,
+    "parsed_output": {
+      "topic": [
+        "acting",
+        "plot",
+        "directing",
+        "cinematography"
+      ],
+      "sentiment": "positive",
+      "sentiment_score": 0.7,
+      "key_phrases": [
+        "nicely staged",
+        "effective",
+        "handsome guide",
+        "pretty blonde"
+      ],
+      "aspects": [
+        {
+          "aspect": "plot",
+          "sentiment": "positive",
+          "evidence": "The synopsis describes an engaging conflict between photographers and a game hunter"
+        },
+        {
+          "aspect": "directing",
+          "sentiment": "positive",
+          "evidence": "The circular direction reappears in the later 'fight' between Brown and Mr. Smith; and, it is effective"
+        },
+        {
+          "aspect": "cinematography",
+          "sentiment": "positive",
+          "evidence": "A pivotal scene... is nicely staged"
+        },
+        {
+          "aspect": "acting",
+          "sentiment": "neutral",
+          "evidence": "Simcox' early sex romp adds noth (incomplete, suggesting a negative or neutral note)"
+        }
+      ]
+    }
+  }
+]
