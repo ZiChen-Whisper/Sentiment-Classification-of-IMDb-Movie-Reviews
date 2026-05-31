@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMDB电影评论情感分类 - 答辩演示</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-card: rgba(255,255,255,0.04);
+  --bg-card-hover: rgba(255,255,255,0.08);
+  --accent-gold: #f0c040;
+  --accent-cyan: #22d3ee;
+  --accent-teal: #14b8a6;
+  --accent-emerald: #34d399;
+  --accent-rose: #fb7185;
+  --accent-orange: #f97316;
+  --accent-purple: #a78bfa;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-subtle: rgba(255,255,255,0.08);
+  --glow-gold: 0 0 40px rgba(240,192,64,0.15);
+  --glow-cyan: 0 0 40px rgba(34,211,238,0.15);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.presentation {
+  width: 100%; height: 100%;
+  position: relative;
+  perspective: 1200px;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 80px;
+  opacity: 0;
+  transform: translateX(100px) scale(0.95) rotateY(-8deg);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0) scale(1) rotateY(0deg);
+  pointer-events: auto;
+}
+
+.slide.prev {
+  opacity: 0;
+  transform: translateX(-100px) scale(0.95) rotateY(8deg);
+}
+
+.slide-inner {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.slide-number {
+  position: absolute;
+  bottom: 30px;
+  right: 40px;
+  font-size: 14px;
+  color: var(--text-muted);
+  font-family: 'Noto Serif SC', serif;
+  letter-spacing: 2px;
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan));
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 100;
+  box-shadow: 0 0 10px rgba(240,192,64,0.5);
+}
+
+.nav-controls {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 100;
+}
+
+.nav-btn {
+  width: 44px; height: 44px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(255,255,255,0.12);
+  color: var(--text-primary);
+  border-color: var(--accent-gold);
+  box-shadow: var(--glow-gold);
+}
+
+.nav-btn svg { width: 18px; height: 18px; }
+
+h1, h2, h3 { font-family: 'Noto Serif SC', serif; }
+
+h1 {
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  position: relative;
+  display: inline-block;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px; left: 0;
+  width: 60px; height: 3px;
+  background: linear-gradient(90deg, var(--accent-gold), transparent);
+  border-radius: 2px;
+}
+
+h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+p, li {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.stagger { opacity: 0; transform: translateY(30px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.slide.active .stagger { opacity: 1; transform: translateY(0); }
+
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+.stagger-6 { transition-delay: 0.6s; }
+.stagger-7 { transition-delay: 0.7s; }
+.stagger-8 { transition-delay: 0.8s; }
+.stagger-9 { transition-delay: 0.9s; }
+.stagger-10 { transition-delay: 1.0s; }
+
+.highlight { color: var(--accent-gold); font-weight: 700; }
+.highlight-cyan { color: var(--accent-cyan); font-weight: 700; }
+.highlight-emerald { color: var(--accent-emerald); font-weight: 700; }
+.highlight-rose { color: var(--accent-rose); font-weight: 700; }
+.highlight-purple { color: var(--accent-purple); font-weight: 700; }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 28px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255,255,255,0.15);
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
+
+.badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.badge-gold { background: rgba(240,192,64,0.15); color: var(--accent-gold); border: 1px solid rgba(240,192,64,0.3); }
+.badge-cyan { background: rgba(34,211,238,0.15); color: var(--accent-cyan); border: 1px solid rgba(34,211,238,0.3); }
+.badge-emerald { background: rgba(52,211,153,0.15); color: var(--accent-emerald); border: 1px solid rgba(52,211,153,0.3); }
+.badge-rose { background: rgba(251,113,133,0.15); color: var(--accent-rose); border: 1px solid rgba(251,113,133,0.3); }
+.badge-purple { background: rgba(167,139,250,0.15); color: var(--accent-purple); border: 1px solid rgba(167,139,250,0.3); }
+
+.bar-chart { display: flex; flex-direction: column; gap: 14px; }
+.bar-row { display: flex; align-items: center; gap: 14px; }
+.bar-label { width: 180px; font-size: 0.9rem; color: var(--text-secondary); text-align: right; flex-shrink: 0; }
+.bar-track { flex: 1; height: 28px; background: rgba(255,255,255,0.05); border-radius: 6px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 6px; transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1); width: 0; }
+.slide.active .bar-fill { width: var(--w); }
+.bar-value { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.8rem; font-weight: 700; color: var(--text-primary); text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+
+.flow-steps { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; }
+.flow-step {
+  padding: 12px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.flow-arrow { color: var(--accent-gold); font-size: 1.2rem; margin: 0 6px; opacity: 0.6; }
+
+.timeline { position: relative; padding-left: 40px; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 12px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent-gold), var(--accent-cyan), var(--accent-emerald));
+}
+.timeline-item { position: relative; margin-bottom: 28px; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -34px; top: 6px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-gold);
+  background: var(--bg-primary);
+}
+
+.pmi-container { display: flex; gap: 40px; }
+.pmi-col { flex: 1; }
+.pmi-col h3 { text-align: center; margin-bottom: 20px; }
+.pmi-word {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+.pmi-positive { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); }
+.pmi-negative { background: rgba(251,113,133,0.08); border: 1px solid rgba(251,113,133,0.2); }
+.pmi-score { font-weight: 700; font-size: 0.85rem; }
+
+.feature-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.feature-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.feature-item:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+.feature-name { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; }
+.feature-coeff { font-size: 1.4rem; font-weight: 700; font-family: 'Noto Serif SC', serif; }
+.feature-coeff.negative { color: var(--accent-rose); }
+.feature-coeff.positive { color: var(--accent-emerald); }
+
+.stat-row { display: flex; gap: 24px; margin-top: 20px; }
+.stat-box {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+.stat-value { font-size: 2.4rem; font-weight: 900; font-family: 'Noto Serif SC', serif; }
+.stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; }
+
+.table-wrapper {
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+}
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  background: rgba(255,255,255,0.06);
+  padding: 14px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.data-table td {
+  padding: 12px 18px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+.cover-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(240,192,64,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(34,211,238,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(20,184,166,0.06) 0%, transparent 40%);
+}
+
+.cover-particles {
+  position: absolute; inset: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: var(--accent-gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: float-particle 8s infinite;
+}
+
+@keyframes float-particle {
+  0% { opacity: 0; transform: translateY(100vh) scale(0); }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+}
+
+.cover-title {
+  font-size: 3.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #fff 40%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.cover-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 20px;
+  letter-spacing: 4px;
+}
+
+.cover-meta {
+  margin-top: 40px;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+
+.cover-meta-item {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cover-meta-item svg { width: 16px; height: 16px; opacity: 0.5; }
+
+.section-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.section-tag-cyan {
+  color: var(--accent-cyan);
+}
+
+.evolution-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 40px 0;
+}
+
+.evo-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 30px;
+}
+
+.evo-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-family: 'Noto Serif SC', serif;
+  position: relative;
+}
+
+.evo-circle::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid;
+  opacity: 0.3;
+  animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.1); opacity: 0.1; }
+}
+
+.evo-connector {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan));
+  opacity: 0.4;
+  position: relative;
+}
+
+.evo-connector::after {
+  content: '▶';
+  position: absolute;
+  right: -6px; top: -9px;
+  font-size: 0.7rem;
+  color: var(--accent-cyan);
+  opacity: 0.6;
+}
+
+.evo-label { font-size: 0.85rem; color: var(--text-secondary); text-align: center; }
+.evo-sublabel { font-size: 0.75rem; color: var(--text-muted); }
+
+.insight-box {
+  background: rgba(240,192,64,0.06);
+  border-left: 3px solid var(--accent-gold);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 24px;
+  margin-top: 20px;
+}
+
+.insight-box-cyan {
+  background: rgba(34,211,238,0.06);
+  border-left: 3px solid var(--accent-cyan);
+  border-radius: 0 10px 10px 0;
+  padding: 18px 24px;
+  margin-top: 20px;
+}
+
+.insight-box p, .insight-box-cyan p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; }
+
+.comparison-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.comparison-item {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.comparison-item:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.comparison-value {
+  font-size: 2.2rem;
+  font-weight: 900;
+  font-family: 'Noto Serif SC', serif;
+}
+
+.comparison-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.qa-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 22px 26px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.qa-card:hover { background: var(--bg-card-hover); border-color: rgba(255,255,255,0.15); }
+
+.qa-question {
+  font-weight: 600;
+  color: var(--accent-cyan);
+  font-size: 0.95rem;
+  margin-bottom: 0;
+  transition: margin-bottom 0.3s ease;
+}
+
+.qa-card.open .qa-question { margin-bottom: 12px; }
+
+.qa-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+  opacity: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.qa-card.open .qa-answer { max-height: 200px; opacity: 1; }
+
+.qa-toggle {
+  float: right;
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.qa-card.open .qa-toggle { transform: rotate(45deg); }
+
+.structured-output {
+  background: rgba(34,211,238,0.04);
+  border: 1px solid rgba(34,211,238,0.15);
+  border-radius: 12px;
+  padding: 24px;
+  font-family: 'Noto Sans SC', monospace;
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+.so-key { color: var(--accent-cyan); }
+.so-value { color: var(--text-primary); }
+.so-positive { color: var(--accent-emerald); }
+.so-negative { color: var(--accent-rose); }
+
+.confidence-bar {
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease;
+  width: 0;
+}
+
+.slide.active .confidence-fill { width: var(--w); }
+
+.bg-dots {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+}
+
+.prompt-block {
+  background: rgba(167,139,250,0.04);
+  border: 1px solid rgba(167,139,250,0.15);
+  border-radius: 12px;
+  padding: 20px 24px;
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+.prompt-key { color: var(--accent-purple); font-weight: 600; }
+.prompt-val { color: var(--text-secondary); }
+
+.framework-slot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+.framework-slot-name {
+  min-width: 100px;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  font-size: 0.85rem;
+}
+.framework-slot-desc {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.finding-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+.finding-card:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+.finding-icon {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+.finding-title {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.finding-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .slide { padding: 40px; }
+  h1 { font-size: 2.4rem; }
+  h2 { font-size: 1.6rem; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  .pmi-container { flex-direction: column; gap: 20px; }
+  .stat-row { flex-direction: column; }
+  .evolution-line { flex-wrap: wrap; }
+  .bar-label { width: 120px; font-size: 0.8rem; }
+  .comparison-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="presentation" id="presentation">
+
+  <!-- Slide 1: Cover -->
+  <div class="slide active" data-index="0">
+    <div class="cover-bg"></div>
+    <div class="cover-particles" id="particles"></div>
+    <div class="bg-dots"></div>
+    <div class="slide-inner" style="position:relative;z-index:2;text-align:center;">
+      <div class="stagger stagger-1 cover-title">IMDB电影评论<br>情感分类实验</div>
+      <div class="stagger stagger-2 cover-subtitle">SENTIMENT ANALYSIS OF IMDB MOVIE REVIEWS</div>
+      <div class="stagger stagger-3 cover-meta">
+        <div class="cover-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          人工智能课程大作业
+        </div>
+        <div class="cover-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          2026年5月
+        </div>
+      </div>
+      <div class="stagger stagger-4" style="margin-top:60px;display:flex;gap:12px;justify-content:center;">
+        <span class="badge badge-gold">特征选择</span>
+        <span class="badge badge-cyan">特征设计</span>
+        <span class="badge badge-purple">Prompt设计</span>
+        <span class="badge badge-emerald">框架式表示</span>
+      </div>
+    </div>
+    <div class="slide-number">01 / 15</div>
+  </div>
+
+  <!-- Slide 2: Task & Data Overview -->
+  <div class="slide" data-index="1">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag">PART 01</div>
+      <h2 class="stagger stagger-1">任务与数据概览</h2>
+      <p class="stagger stagger-2" style="max-width:700px;margin-bottom:24px;">IMDB电影评论情感二分类——判断评论是正向还是负向。</p>
+      <div class="stagger stagger-3 stat-row">
+        <div class="stat-box">
+          <div class="stat-value" style="color:var(--accent-gold);">40,000</div>
+          <div class="stat-label">训练集评论数</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" style="color:var(--accent-cyan);">5,000</div>
+          <div class="stat-label">验证集评论数</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" style="color:var(--accent-teal);">5,000</div>
+          <div class="stat-label">测试集评论数</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" style="color:var(--accent-emerald);">1:1</div>
+          <div class="stat-label">正负样本比例</div>
+        </div>
+      </div>
+      <div class="stagger stagger-4" style="margin-top:28px;">
+        <h3 style="color:var(--accent-cyan);font-size:1.05rem;">预处理流水线</h3>
+        <div class="flow-steps" style="margin-top:12px;">
+          <div class="flow-step">去除HTML标签</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step">去除标点符号</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step">统一小写</div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step" style="border-color:var(--accent-gold);color:var(--accent-gold);">去停用词<br><span style="font-size:0.75rem;color:var(--text-muted);">保留否定词</span></div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-step">词形还原</div>
+        </div>
+        <p style="margin-top:12px;font-size:0.9rem;color:var(--text-muted);">预处理后平均词数从231降至120，减少<span class="highlight">48%</span>。保留否定词（not、no）是因为它们在情感分析中至关重要。</p>
+      </div>
+    </div>
+    <div class="slide-number">02 / 15</div>
+  </div>
+
+  <!-- Slide 3: Baseline Models (condensed) -->
+  <div class="slide" data-index="2">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag">PART 02 — 基线模型</div>
+      <h2 class="stagger stagger-1">基线模型结果总览</h2>
+      <p class="stagger stagger-2" style="margin-bottom:20px;max-width:700px;font-size:0.95rem;">从规则方法到机器学习，准确率从62%提升至89.5%。以下为快速总览，重点在后续的<span class="highlight">与众不同</span>之处。</p>
+      <div class="stagger stagger-3 bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">SentiWordNet</div>
+          <div class="bar-track"><div class="bar-fill" style="--w:61.92%;background:linear-gradient(90deg,#64748b,#94a3b8);"><span class="bar-value">61.92%</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">朴素贝叶斯</div>
+          <div class="bar-track"><div class="bar-fill" style="--w:86.42%;background:linear-gradient(90deg,var(--accent-teal),var(--accent-cyan));"><span class="bar-value">86.42%</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">逻辑回归 (Count)</div>
+          <div class="bar-track"><div class="bar-fill" style="--w:88.90%;background:linear-gradient(90deg,var(--accent-teal),var(--accent-cyan));"><span class="bar-value">88.90%</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">逻辑回归 (TF-IDF)</div>
+          <div class="bar-track"><div class="bar-fill" style="--w:89.54%;background:linear-gradient(90deg,var(--accent-cyan),var(--accent-emerald));"><span class="bar-value">89.54%</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">逻辑回归 (K=200)</div>
+          <div class="bar-track"><div class="bar-fill" style="--w:84.34%;background:linear-gradient(90deg,var(--accent-orange),var(--accent-gold));"><span class="bar-value">84.34%</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">逻辑回归 (K=2000)</div>
+          <div class="bar-track"><div class="bar-fill" style="--w:88.68%;background:linear-gradient(90deg,var(--accent-orange),var(--accent-gold));"><span class="bar-value">88.68%</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">逻辑回归 (新特征)</div>
+          <div class="bar-track"><div class="bar-fill" style="--w:89.36%;background:linear-gradient(90deg,var(--accent-gold),var(--accent-orange));"><span class="bar-value">89.36%</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">大语言模型</div>
+          <div class="bar-track"><div class="bar-fill" style="--w:95.38%;background:linear-gradient(90deg,var(--accent-emerald),var(--accent-cyan));"><span class="bar-value">95.38%</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">03 / 15</div>
+  </div>
+
+  <!-- Slide 4: Unique Design 1 - Feature Selection -->
+  <div class="slide" data-index="3">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag">与众不同 ① — 特征选择</div>
+      <h2 class="stagger stagger-1">特征选择策略</h2>
+      <p class="stagger stagger-2" style="margin-bottom:24px;max-width:700px;">使用 SelectKBest + 卡方检验，从50,000维TF-IDF特征中选择最重要的K个特征。</p>
+      <div class="stagger stagger-3 comparison-row">
+        <div class="comparison-item" style="border-top:3px solid var(--accent-rose);">
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;">K = 200</div>
+          <div class="comparison-value" style="color:var(--accent-rose);">84.34%</div>
+          <div class="comparison-label">准确率 ↓6.2%</div>
+          <div style="margin-top:12px;font-size:0.8rem;color:var(--text-muted);">特征维度降 <span class="highlight-rose">99.6%</span></div>
+          <div style="margin-top:8px;font-size:0.8rem;color:var(--text-muted);">特征太少，丢失重要信息</div>
+        </div>
+        <div class="comparison-item" style="border-top:3px solid var(--accent-gold);background:rgba(240,192,64,0.04);">
+          <div style="font-size:0.8rem;color:var(--accent-gold);margin-bottom:12px;">K = 2000 ⭐</div>
+          <div class="comparison-value" style="color:var(--accent-gold);">88.68%</div>
+          <div class="comparison-label">准确率 ↓0.86%</div>
+          <div style="margin-top:12px;font-size:0.8rem;color:var(--text-muted);">特征维度降 <span class="highlight">96%</span></div>
+          <div style="margin-top:8px;font-size:0.8rem;color:var(--accent-gold);">效率与性能的最佳平衡 ✦</div>
+        </div>
+        <div class="comparison-item" style="border-top:3px solid var(--accent-emerald);">
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;">全特征 (50,000)</div>
+          <div class="comparison-value" style="color:var(--accent-emerald);">89.54%</div>
+          <div class="comparison-label">准确率（基准）</div>
+          <div style="margin-top:12px;font-size:0.8rem;color:var(--text-muted);">全部特征</div>
+          <div style="margin-top:8px;font-size:0.8rem;color:var(--text-muted);">计算成本最高</div>
+        </div>
+      </div>
+      <div class="stagger stagger-4 insight-box" style="margin-top:24px;">
+        <p>⭐ <span class="highlight">K=2000 以4%的特征保留了98.8%的性能</span>，量化了"多少特征够用"这个问题。选中的特征词如 amazing、annoying、atrocious、avoid 都具有明确的情感倾向。</p>
+      </div>
+    </div>
+    <div class="slide-number">04 / 15</div>
+  </div>
+
+  <!-- Slide 5: Unique Design 2 - New Features -->
+  <div class="slide" data-index="4">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag">与众不同 ② — 特征设计</div>
+      <h2 class="stagger stagger-1">新特征设计</h2>
+      <div class="stagger stagger-2 feature-grid">
+        <div class="feature-item">
+          <div class="feature-name">评论词数</div>
+          <div class="feature-coeff positive">+0.0331</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-name">平均词长</div>
+          <div class="feature-coeff positive">+0.0508</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-name">感叹号数量</div>
+          <div class="feature-coeff positive">+0.0569</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-name">大写字母比例</div>
+          <div class="feature-coeff negative">−0.0354</div>
+        </div>
+        <div class="feature-item" style="border-color:rgba(251,113,133,0.3);background:rgba(251,113,133,0.04);">
+          <div class="feature-name">否定词数量</div>
+          <div class="feature-coeff negative">−0.2467</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-name">情感词比例</div>
+          <div class="feature-coeff positive">+0.0423</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-name">正向情感词比例</div>
+          <div class="feature-coeff positive">+0.0632</div>
+        </div>
+        <div class="feature-item" style="border-color:rgba(251,113,133,0.3);background:rgba(251,113,133,0.04);">
+          <div class="feature-name">负向情感词比例</div>
+          <div class="feature-coeff negative">−0.2602</div>
+        </div>
+      </div>
+      <div class="stagger stagger-3 grid-2" style="margin-top:24px;">
+        <div class="card">
+          <h3 style="color:var(--accent-gold);font-size:1.05rem;">发现</h3>
+          <ul style="margin-top:12px;list-style:none;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-size:0.9rem;">• 仅8个特征准确率达 <span class="highlight">62.54%</span></li>
+            <li style="font-size:0.9rem;">• <span class="highlight-rose">否定词数量</span>和<span class="highlight-rose">负向情感词比例</span>系数绝对值最大</li>
+            <li style="font-size:0.9rem;">• 揭示了否定词在情感分析中的关键作用</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="color:var(--accent-rose);font-size:1.05rem;">局限与反思</h3>
+          <ul style="margin-top:12px;list-style:none;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-size:0.9rem;">• TF-IDF + 新特征 = <span style="color:var(--text-primary);font-weight:600;">89.36%</span></li>
+            <li style="font-size:0.9rem;">• 8维信号在50,000维中被稀释</li>
+            <li style="font-size:0.9rem;">• 改进方向：特征归一化 / 特征交叉</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">05 / 15</div>
+  </div>
+
+  <!-- Slide 6: Unique Design 3 - Prompt Design -->
+  <div class="slide" data-index="5">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag">与众不同 ③ — Prompt设计</div>
+      <h2 class="stagger stagger-1">Few-shot Prompt 设计</h2>
+      <div class="stagger stagger-2 grid-2">
+        <div class="card" style="border-top:3px solid var(--accent-purple);">
+          <h3 style="color:var(--accent-purple);font-size:1.05rem;">Prompt 结构</h3>
+          <div class="prompt-block" style="margin-top:16px;">
+            <div><span class="prompt-key">[任务描述]</span> <span class="prompt-val">判断IMDB评论的情感极性</span></div>
+            <div><span class="prompt-key">[输出格式]</span> <span class="prompt-val">Positive / Negative</span></div>
+            <div><span class="prompt-key">[Few-shot示例]</span> <span class="prompt-val">6个示例（3正3负）</span></div>
+            <div><span class="prompt-key">[温度]</span> <span class="prompt-val">0（确保输出稳定性）</span></div>
+          </div>
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:0.9rem;">
+              <span style="color:var(--text-muted);">示例选择策略</span>
+              <span style="color:var(--accent-purple);font-weight:600;">覆盖多样性</span>
+            </div>
+            <div style="font-size:0.85rem;color:var(--text-secondary);line-height:1.6;">
+              ① 覆盖不同评论长度<br>
+              ② 包含不同表达方式（直白/含蓄）<br>
+              ③ 包含否定和转折句式
+            </div>
+          </div>
+        </div>
+        <div class="card" style="border-top:3px solid var(--accent-emerald);">
+          <h3 style="color:var(--accent-emerald);font-size:1.05rem;">测试结果</h3>
+          <div style="margin-top:16px;text-align:center;">
+            <div style="font-size:3.4rem;font-weight:900;color:var(--accent-emerald);font-family:'Noto Serif SC',serif;">95.38%</div>
+            <div style="font-size:0.9rem;color:var(--text-muted);margin-top:8px;">200条测试集准确率</div>
+          </div>
+          <div style="margin-top:20px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:0.9rem;">
+              <span style="color:var(--text-muted);">正向 Precision</span>
+              <span style="color:var(--accent-emerald);font-weight:600;">0.99</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.9rem;">
+              <span style="color:var(--text-muted);">负向 Recall</span>
+              <span style="color:var(--accent-emerald);font-weight:600;">0.99</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.9rem;">
+              <span style="color:var(--text-muted);">相比传统方法提升</span>
+              <span style="color:var(--accent-gold);font-weight:600;">+5.84%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stagger stagger-3 insight-box" style="margin-top:20px;">
+        <p>🤖 大语言模型能理解否定、反讽等复杂语义，这是传统bag-of-words方法做不到的。6个示例足以引导模型理解任务格式，温度设为0确保输出一致性。</p>
+      </div>
+    </div>
+    <div class="slide-number">06 / 15</div>
+  </div>
+
+  <!-- Slide 7: Unique Design 4 - Framework Representation -->
+  <div class="slide" data-index="6">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag">与众不同 ④ — 框架式表示</div>
+      <h2 class="stagger stagger-1">结构化输出框架设计</h2>
+      <div class="stagger stagger-2 grid-2">
+        <div class="card" style="border-top:3px solid var(--accent-cyan);">
+          <h3 style="color:var(--accent-cyan);font-size:1.05rem;">框架的5个槽位</h3>
+          <div style="margin-top:16px;">
+            <div class="framework-slot" style="background:rgba(34,211,238,0.06);">
+              <span class="framework-slot-name">topics</span>
+              <span class="framework-slot-desc">评论讨论的主要话题（plot, acting, characters...）</span>
+            </div>
+            <div class="framework-slot" style="background:rgba(52,211,153,0.06);">
+              <span class="framework-slot-name">overall</span>
+              <span class="framework-slot-desc">整体情感判断（Positive / Negative）</span>
+            </div>
+            <div class="framework-slot" style="background:rgba(240,192,64,0.06);">
+              <span class="framework-slot-name">confidence</span>
+              <span class="framework-slot-desc">置信度（0-1），反映模型对判断的把握</span>
+            </div>
+            <div class="framework-slot" style="background:rgba(167,139,250,0.06);">
+              <span class="framework-slot-name">aspects</span>
+              <span class="framework-slot-desc">方面级分析：每个方面的独立情感判断</span>
+            </div>
+            <div class="framework-slot" style="background:rgba(251,113,133,0.06);">
+              <span class="framework-slot-name">key_phrases</span>
+              <span class="framework-slot-desc">支撑情感判断的关键词句</span>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="border-top:3px solid var(--accent-emerald);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h3 style="color:var(--accent-emerald);font-size:1.05rem;margin-bottom:0;">输出示例</h3>
+            <span class="badge badge-emerald">20条测试</span>
+          </div>
+          <div class="structured-output">
+            <div><span class="so-key">topics：</span><span class="so-value">plot, acting, characters</span></div>
+            <div><span class="so-key">overall_sentiment：</span><span class="so-positive">Positive</span></div>
+            <div><span class="so-key">confidence：</span><span class="so-value">0.85</span></div>
+            <div><span class="so-key">aspect_sentiments：</span></div>
+            <div style="padding-left:16px;">
+              <div><span class="so-value">角色设计</span> → <span class="so-positive">Positive</span></div>
+              <div><span class="so-value">教育内容</span> → <span class="so-negative">Negative</span></div>
+            </div>
+            <div><span class="so-key">key_phrases：</span><span class="so-value">"beautifully crafted"</span></div>
+          </div>
+          <div style="margin-top:12px;">
+            <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;">
+              <span style="color:var(--text-muted);">高置信度样本准确率</span>
+              <span style="color:var(--accent-emerald);font-weight:600;">94.74%</span>
+            </div>
+            <div class="confidence-bar"><div class="confidence-fill" style="--w:94.74%;background:var(--accent-emerald);"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="stagger stagger-3 insight-box-cyan" style="margin-top:20px;">
+        <p>📋 框架式表示不仅是分类标签，更是<span class="highlight-cyan">结构化的情感分析报告</span>。一条评论可能对演技正面但对剧情负面，置信度还能辅助人工审核。</p>
+      </div>
+    </div>
+    <div class="slide-number">07 / 15</div>
+  </div>
+
+  <!-- Slide 8: Findings - Data Level -->
+  <div class="slide" data-index="7">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag section-tag-cyan">发现 ① — 数据层面</div>
+      <h2 class="stagger stagger-1">PMI分析：专有名词的情感指向性</h2>
+      <div class="stagger stagger-2 pmi-container">
+        <div class="pmi-col">
+          <h3 style="color:var(--accent-emerald);">正向 PMI 高频词</h3>
+          <div class="pmi-word pmi-positive"><span>dassin <span style="color:var(--text-muted);font-size:0.8rem;">经典导演</span></span><span class="pmi-score" style="color:var(--accent-emerald);">高PMI</span></div>
+          <div class="pmi-word pmi-positive"><span>gundam <span style="color:var(--text-muted);font-size:0.8rem;">知名系列</span></span><span class="pmi-score" style="color:var(--accent-emerald);">高PMI</span></div>
+          <div class="pmi-word pmi-positive"><span>ponyo <span style="color:var(--text-muted);font-size:0.8rem;">宫崎骏电影</span></span><span class="pmi-score" style="color:var(--accent-emerald);">高PMI</span></div>
+          <div class="pmi-word pmi-positive"><span>remarkable <span style="color:var(--text-muted);font-size:0.8rem;">出色的</span></span><span class="pmi-score" style="color:var(--accent-emerald);">高PMI</span></div>
+          <div class="pmi-word pmi-positive"><span>superb <span style="color:var(--text-muted);font-size:0.8rem;">极好的</span></span><span class="pmi-score" style="color:var(--accent-emerald);">高PMI</span></div>
+        </div>
+        <div class="pmi-col">
+          <h3 style="color:var(--accent-rose);">负向 PMI 高频词</h3>
+          <div class="pmi-word pmi-negative"><span>manos <span style="color:var(--text-muted);font-size:0.8rem;">著名烂片</span></span><span class="pmi-score" style="color:var(--accent-rose);">高PMI</span></div>
+          <div class="pmi-word pmi-negative"><span>uwe boll <span style="color:var(--text-muted);font-size:0.8rem;">劣质导演</span></span><span class="pmi-score" style="color:var(--accent-rose);">高PMI</span></div>
+          <div class="pmi-word pmi-negative"><span>abomination <span style="color:var(--text-muted);font-size:0.8rem;">令人厌恶</span></span><span class="pmi-score" style="color:var(--accent-rose);">高PMI</span></div>
+          <div class="pmi-word pmi-negative"><span>stinker <span style="color:var(--text-muted);font-size:0.8rem;">烂片</span></span><span class="pmi-score" style="color:var(--accent-rose);">高PMI</span></div>
+          <div class="pmi-word pmi-negative"><span>atrocious <span style="color:var(--text-muted);font-size:0.8rem;">糟糕透顶</span></span><span class="pmi-score" style="color:var(--accent-rose);">高PMI</span></div>
+        </div>
+      </div>
+      <div class="stagger stagger-3 insight-box-cyan" style="margin-top:24px;">
+        <p>🔍 <span class="highlight-cyan">关键发现</span>：PMI值最高的词几乎都是<span class="highlight">专有名词</span>——经典影片名/导演名指向正向，烂片名/劣质导演名指向负向。观众倾向于对经典影片给予正面评价，对烂片集中吐槽。词频分析则发现通用词（film、movie）缺乏区分度。</p>
+      </div>
+    </div>
+    <div class="slide-number">08 / 15</div>
+  </div>
+
+  <!-- Slide 9: Findings - Model Level -->
+  <div class="slide" data-index="8">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag section-tag-cyan">发现 ② — 模型层面</div>
+      <h2 class="stagger stagger-1">模型学到了什么？</h2>
+      <div class="stagger stagger-2 grid-3" style="margin-bottom:24px;">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:2.4rem;font-weight:900;color:var(--accent-gold);font-family:'Noto Serif SC',serif;">61-64%</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);margin-top:8px;">ML模型与SentiWordNet<br>方向一致率</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">弱到中等相关</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:2.4rem;font-weight:900;color:var(--accent-rose);font-family:'Noto Serif SC',serif;">47-59%</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);margin-top:8px;">误分类样本中<br>SentiWordNet也错的比例</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">困难样本存在情感模糊性</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:2.4rem;font-weight:900;color:var(--accent-cyan);font-family:'Noto Serif SC',serif;">0.01-0.05</div>
+          <div style="font-size:0.85rem;color:var(--text-muted);margin-top:8px;">正向情感词数量<br>与预测的相关系数</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">非常弱的相关</div>
+        </div>
+      </div>
+      <div class="stagger stagger-3" style="display:flex;flex-direction:column;gap:16px;">
+        <div class="insight-box-cyan">
+          <p>📊 ML模型在大部分样本上做出了和SentiWordNet不同的判断，但准确率远高于SentiWordNet → <span class="highlight-cyan">模型学习了超越情感词统计的上下文组合信息</span></p>
+        </div>
+        <div class="insight-box-cyan">
+          <p>⚡ 困难样本不管是规则方法还是机器学习方法都觉得难 → <span class="highlight-cyan">这些样本本身就存在情感模糊性</span></p>
+        </div>
+        <div class="insight-box-cyan">
+          <p>🧠 仅靠情感词的数量和方向不足以完成分类 → <span class="highlight-cyan">模型需要理解更复杂的语义组合</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">09 / 15</div>
+  </div>
+
+  <!-- Slide 10: Findings - LLM Level -->
+  <div class="slide" data-index="9">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag section-tag-cyan">发现 ③ — 大语言模型</div>
+      <h2 class="stagger stagger-1">大语言模型的细粒度发现</h2>
+      <div class="stagger stagger-2 grid-2">
+        <div class="card" style="border-top:3px solid var(--accent-emerald);">
+          <h3 style="color:var(--accent-emerald);font-size:1.05rem;">方面级情感差异</h3>
+          <div style="margin-top:16px;">
+            <p style="font-size:0.9rem;margin-bottom:12px;">结构化输出揭示：同一条评论可对不同方面给出不同情感判断</p>
+            <div style="background:rgba(52,211,153,0.06);border-radius:10px;padding:16px;margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:0.9rem;">角色设计</span>
+                <span class="badge badge-emerald">Positive</span>
+              </div>
+            </div>
+            <div style="background:rgba(251,113,133,0.06);border-radius:10px;padding:16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:0.9rem;">教育内容</span>
+                <span class="badge badge-rose">Negative</span>
+              </div>
+            </div>
+          </div>
+          <p style="margin-top:12px;font-size:0.85rem;color:var(--text-muted);">这种细粒度信息对实际应用（如产品改进）比单一标签更有价值</p>
+        </div>
+        <div class="card" style="border-top:3px solid var(--accent-cyan);">
+          <h3 style="color:var(--accent-cyan);font-size:1.05rem;">置信度的校准意义</h3>
+          <div style="margin-top:16px;">
+            <div style="display:flex;justify-content:space-between;font-size:0.9rem;margin-bottom:8px;">
+              <span style="color:var(--text-muted);">高置信度样本准确率</span>
+              <span style="color:var(--accent-emerald);font-weight:600;">94.74%</span>
+            </div>
+            <div class="confidence-bar" style="margin-bottom:20px;"><div class="confidence-fill" style="--w:94.74%;background:var(--accent-emerald);"></div></div>
+            <p style="font-size:0.9rem;margin-bottom:12px;">置信度越高，预测越可靠→可用于辅助人工审核决策</p>
+            <div style="display:flex;gap:12px;">
+              <div style="flex:1;background:rgba(52,211,153,0.06);border-radius:8px;padding:12px;text-align:center;">
+                <div style="font-size:0.8rem;color:var(--text-muted);">高置信度</div>
+                <div style="font-size:1.1rem;font-weight:700;color:var(--accent-emerald);margin-top:4px;">自动通过</div>
+              </div>
+              <div style="flex:1;background:rgba(240,192,64,0.06);border-radius:8px;padding:12px;text-align:center;">
+                <div style="font-size:0.8rem;color:var(--text-muted);">中置信度</div>
+                <div style="font-size:1.1rem;font-weight:700;color:var(--accent-gold);margin-top:4px;">人工抽检</div>
+              </div>
+              <div style="flex:1;background:rgba(251,113,133,0.06);border-radius:8px;padding:12px;text-align:center;">
+                <div style="font-size:0.8rem;color:var(--text-muted);">低置信度</div>
+                <div style="font-size:1.1rem;font-weight:700;color:var(--accent-rose);margin-top:4px;">人工审核</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stagger stagger-3 insight-box-cyan" style="margin-top:20px;">
+        <p>🤖 大语言模型能理解否定、反讽等复杂语义，这是传统bag-of-words方法做不到的。结构化输出将分类问题升级为<span class="highlight-cyan">细粒度情感分析</span>。</p>
+      </div>
+    </div>
+    <div class="slide-number">10 / 15</div>
+  </div>
+
+  <!-- Slide 11: Conclusion -->
+  <div class="slide" data-index="10">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag">PART 05</div>
+      <h2 class="stagger stagger-1">总结</h2>
+      <div class="stagger stagger-2 evolution-line">
+        <div class="evo-node">
+          <div class="evo-circle" style="background:rgba(100,116,139,0.2);color:#94a3b8;border:2px solid #64748b;">62%</div>
+          <div class="evo-label">规则方法</div>
+          <div class="evo-sublabel">SentiWordNet</div>
+        </div>
+        <div class="evo-connector"></div>
+        <div class="evo-node">
+          <div class="evo-circle" style="background:rgba(34,211,238,0.15);color:var(--accent-cyan);border:2px solid var(--accent-cyan);">89.5%</div>
+          <div class="evo-label">机器学习</div>
+          <div class="evo-sublabel">逻辑回归+TF-IDF</div>
+        </div>
+        <div class="evo-connector"></div>
+        <div class="evo-node">
+          <div class="evo-circle" style="background:rgba(52,211,153,0.15);color:var(--accent-emerald);border:2px solid var(--accent-emerald);">95.4%</div>
+          <div class="evo-label">大语言模型</div>
+          <div class="evo-sublabel">DeepSeek+Few-shot</div>
+        </div>
+      </div>
+      <div class="stagger stagger-3 grid-2" style="margin-top:24px;">
+        <div>
+          <h3 style="color:var(--accent-gold);font-size:1.05rem;">四个与众不同</h3>
+          <div class="timeline" style="margin-top:16px;">
+            <div class="timeline-item">
+              <div style="font-size:0.9rem;color:var(--text-secondary);"><span class="highlight">特征选择</span>：K=2000以4%特征保留98.8%性能</div>
+            </div>
+            <div class="timeline-item">
+              <div style="font-size:0.9rem;color:var(--text-secondary);"><span class="highlight">特征设计</span>：否定词数量和负向情感词比例贡献最大</div>
+            </div>
+            <div class="timeline-item">
+              <div style="font-size:0.9rem;color:var(--text-secondary);"><span class="highlight-purple">Prompt设计</span>：Few-shot + 温度0，覆盖多样性示例</div>
+            </div>
+            <div class="timeline-item">
+              <div style="font-size:0.9rem;color:var(--text-secondary);"><span class="highlight-cyan">框架式表示</span>：5槽位结构化输出，方面级细粒度分析</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 style="color:var(--accent-cyan);font-size:1.05rem;">三个核心发现</h3>
+          <div class="timeline" style="margin-top:16px;">
+            <div class="timeline-item">
+              <div style="font-size:0.9rem;color:var(--text-secondary);"><span class="highlight-cyan">数据</span>：专有名词具有强烈情感指向性</div>
+            </div>
+            <div class="timeline-item">
+              <div style="font-size:0.9rem;color:var(--text-secondary);"><span class="highlight-cyan">模型</span>：模型学习超越词频的上下文信息</div>
+            </div>
+            <div class="timeline-item">
+              <div style="font-size:0.9rem;color:var(--text-secondary);"><span class="highlight-cyan">困难样本</span>：情感模糊性是误分类的根源</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">11 / 15</div>
+  </div>
+
+  <!-- Slide 12: Q&A -->
+  <div class="slide" data-index="11">
+    <div class="cover-bg"></div>
+    <div class="bg-dots"></div>
+    <div class="slide-inner" style="position:relative;z-index:2;text-align:center;">
+      <div class="stagger stagger-1">
+        <div style="font-size:4rem;font-weight:900;font-family:'Noto Serif SC',serif;background:linear-gradient(135deg,var(--accent-gold),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Q & A</div>
+        <div style="font-size:1.1rem;color:var(--text-muted);margin-top:12px;letter-spacing:2px;">感谢各位老师聆听，欢迎提问</div>
+      </div>
+      <div class="stagger stagger-2" style="margin-top:48px;">
+        <button onclick="updateSlide(12)" style="background:rgba(255,255,255,0.06);border:1px solid var(--border-subtle);color:var(--text-secondary);padding:14px 32px;border-radius:12px;font-size:0.95rem;cursor:pointer;transition:all 0.3s ease;font-family:'Noto Sans SC',sans-serif;backdrop-filter:blur(10px);" onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.borderColor='var(--accent-gold)';this.style.color='var(--accent-gold)'" onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.borderColor='var(--border-subtle)';this.style.color='var(--text-secondary)'">📋 备答速查</button>
+      </div>
+    </div>
+    <div class="slide-number">12 / 15</div>
+  </div>
+
+  <!-- Slide 13: Backup Q&A -->
+  <div class="slide" data-index="12">
+    <div class="bg-dots"></div>
+    <div class="slide-inner">
+      <div class="stagger stagger-1 section-tag">备答速查</div>
+      <h2 class="stagger stagger-1">预设问答</h2>
+      <div class="stagger stagger-2" style="max-width:750px;">
+        <div class="qa-card" onclick="this.classList.toggle('open')">
+          <div class="qa-question">Q：SentiWordNet为什么准确率这么低？<span class="qa-toggle">+</span></div>
+          <div class="qa-answer">三个原因：①只看词的情感极性，忽略上下文；②无法处理否定和反讽；③取第一个同义词集可能不准确。假正向1614条远多于假负向290条，倾向判为正向。</div>
+        </div>
+        <div class="qa-card" onclick="this.classList.toggle('open')">
+          <div class="qa-question">Q：特征选择K=2000为什么是较好的平衡点？<span class="qa-toggle">+</span></div>
+          <div class="qa-answer">K=200时准确率下降6个百分点，特征太少。K=2000时准确率88.68%，仅比全特征低0.86%，但特征维度降低96%。选中的特征词如amazing、annoying都有明确情感倾向。</div>
+        </div>
+        <div class="qa-card" onclick="this.classList.toggle('open')">
+          <div class="qa-question">Q：新特征为什么没有显著提升？<span class="qa-toggle">+</span></div>
+          <div class="qa-answer">8个手工特征单独用有62.54%准确率，但与5万维TF-IDF拼接后8维信号被稀释。否定词数量（-0.2467）和负向情感词比例（-0.2602）系数最大。改进方向：特征归一化或特征交叉。</div>
+        </div>
+        <div class="qa-card" onclick="this.classList.toggle('open')">
+          <div class="qa-question">Q：你的Prompt是怎么设计的？<span class="qa-toggle">+</span></div>
+          <div class="qa-answer">Prompt包含任务描述、输出格式和6个Few-shot示例（3正3负）。示例选择覆盖不同长度、不同表达方式，包含否定和转折句式。温度设为0保证输出一致性。</div>
+        </div>
+        <div class="qa-card" onclick="this.classList.toggle('open')">
+          <div class="qa-question">Q：框架式表示是怎么设计的？各字段有什么含义？<span class="qa-toggle">+</span></div>
+          <div class="qa-answer">框架包含5个槽位：①主题（topics）；②整体情感（overall_sentiment）；③置信度（confidence）；④方面级分析（aspect_sentiments）；⑤关键短语（key_phrases）。输出不仅是标签，更是结构化的情感分析报告。</div>
+        </div>
+        <div class="qa-card" onclick="this.classList.toggle('open')">
+          <div class="qa-question">Q：PMI分析发现了什么有趣的规律？<span class="qa-toggle">+</span></div>
+          <div class="qa-answer">PMI值最高的词几乎都是专有名词——正向如dassin、gundam、ponyo，负向如manos、uwe boll。专有名词具有强烈的情感指向性。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">13 / 15</div>
+  </div>
+
+</div>
+
+<div class="nav-controls">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+function updateSlide(newIndex) {
+  if (newIndex < 0 || newIndex >= totalSlides || newIndex === currentSlide) return;
+
+  slides.forEach((slide, i) => {
+    slide.classList.remove('active', 'prev');
+    if (i < newIndex) {
+      slide.classList.add('prev');
+    } else if (i === newIndex) {
+      slide.classList.add('active');
+    }
+  });
+
+  currentSlide = newIndex;
+  document.getElementById('progressBar').style.width = ((currentSlide + 1) / totalSlides * 100) + '%';
+}
+
+function nextSlide() { updateSlide(currentSlide + 1); }
+function prevSlide() { updateSlide(currentSlide - 1); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault();
+    nextSlide();
+  } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+    e.preventDefault();
+    prevSlide();
+  }
+});
+
+document.getElementById('progressBar').style.width = (1 / totalSlides * 100) + '%';
+
+const particlesContainer = document.getElementById('particles');
+for (let i = 0; i < 30; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.animationDelay = Math.random() * 8 + 's';
+  p.style.animationDuration = (6 + Math.random() * 6) + 's';
+  if (Math.random() > 0.5) p.style.background = 'var(--accent-cyan)';
+  particlesContainer.appendChild(p);
+}
+
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) {
+    diff > 0 ? nextSlide() : prevSlide();
+  }
+});
+</script>
+
+</body>
+</html>
